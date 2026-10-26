@@ -15,6 +15,49 @@ function Brand({onClick}){return <button className="brand" onClick={onClick} ari
 function FancyArrow({light=false}){return <span className={`arrow-round ${light?'light':''}`}><ArrowRight size={19}/></span>}
 function SectionIntro({chapter,kicker,title,description}) { return <header className="section-intro"><div className="section-overline"><SmallLabel>{kicker}</SmallLabel><span>{chapter}</span></div><h1 className="display-title">{title}</h1><p>{description}</p></header> }
 
+// ECOS_SPOTIFY_ARTISTAS_2026 — faixas oficiais incorporadas sem armazenar arquivos comerciais.
+const museumSongs = {
+  zeze: { title: 'É o Amor', id: '2UchMkUxan22i7cHTbUjLp' },
+  marilia: { title: 'Infiel', id: '6UYrC5DlTARibZ62U1r59K' },
+  flor: { title: 'Siriri: Quebrando Milho', id: '1vp1adPEvUey0sXMAWfL3L' },
+  almir: { title: 'Tocando em Frente', id: '3ZRRIlSvOctKY5NqlRESgA' },
+  helena: { title: 'Quatro Horas da Madrugada', id: '0qrOMKe7GBUtPcWfQ9QTu8' },
+  tete: { title: 'Escrito nas Estrelas', id: '4OUzN70Gf32FUhm0U5FipL' },
+  legiao: { title: 'Tempo Perdido', id: '3p71m3r3cFSiatmxrtywHo' },
+  capital: { title: 'Primeiros Erros (Chove) — ao vivo', id: '1UmZ5x2HiFs8rqVFTOo0Xm' },
+  plebe: { title: 'Até Quando Esperar', id: '4qXPxKH9dljeTvLuI6jMB0' },
+};
+
+function ArtistListening({ artist }) {
+  const song = museumSongs[artist.id];
+  if (!song) return null;
+  const songUrl = `https://open.spotify.com/track/${song.id}`;
+  return (
+    <section className="artist-listening" aria-label={`Escuta oficial: ${artist.name}`}>
+      <div className="artist-listening-head">
+        <span>ESTAÇÃO DE ESCUTA · ACERVO MUSICAL</span>
+        <h3>Ouça a voz desta história.</h3>
+        <p>{song.title} · {artist.name}</p>
+      </div>
+      <iframe
+        key={artist.id}
+        title={`Spotify — ${song.title}, ${artist.name}`}
+        src={`https://open.spotify.com/embed/track/${song.id}?utm_source=generator`}
+        width="100%"
+        height="152"
+        style={{ border: 0, display: 'block', borderRadius: '12px' }}
+        loading="lazy"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+      <div className="artist-listening-bottom">
+        <p>Reprodução oficial via Spotify. Requer internet; conforme a conta e a faixa, pode tocar só uma prévia.</p>
+        <a href={songUrl} target="_blank" rel="noopener noreferrer">ABRIR NO SPOTIFY ↗</a>
+      </div>
+    </section>
+  );
+}
+
 export default function App(){
  const [route,setRoute]=useState(routeFromHash);
  const [menuOpen,setMenuOpen]=useState(false);
@@ -142,6 +185,12 @@ const navigate=(page,id)=>{
  const inPlaylist=playlistIds.includes(activeTrack);
  const narrating=playing && activeTrack==='intro';
  const changeTrack=(delta)=>{const i=playlistIds.indexOf(activeTrack);if(i!==-1)playTrack(playlistIds[(i+delta+playlistIds.length)%playlistIds.length]);};
+  useEffect(() => {
+    if (selectedArtist && audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+  }, [selectedArtist]);
+
 
  return <div className={`app-shell ${route.page==='home'?'at-home':''}`}>
   <a href="#main" className="skip-link">Pular para o conteúdo</a>
@@ -258,7 +307,7 @@ const navigate=(page,id)=>{
   </main>
   {route.page!=='home'&&route.page!=='final'&&<div className="floating-journey"><span><i/> ETAPA {Math.max(1,progressMap[route.page])} DE 8</span><button onClick={reset} title="Parar os áudios e deixar pronto para outro visitante"><RotateCcw size={14}/> REINICIAR VISITA</button></div>}
   {activeTrack&&<aside className="mini-player" aria-label="Reprodutor de áudio"><div className="mini-player-art"><Disc3 size={28} className={playing?'spinning':''}/></div><div className="mini-meta"><strong>{currentTrack?.title}</strong><span>{currentTrack?.artist}</span></div>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(-1)} aria-label="Áudio anterior"><SkipBack size={19}/></button>}<button className="mini-control" onClick={()=>playTrack(activeTrack)} aria-label={playing?'Pausar áudio':'Reproduzir áudio'}>{playing?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</button>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(1)} aria-label="Próximo áudio"><SkipForward size={19}/></button>}<div className="mini-progress"><span>{duration(currentTime)}</span><input type="range" aria-label="Posição da reprodução" min="0" max={Math.max(1,audioLength)} step="0.1" value={Math.min(currentTime,Math.max(1,audioLength))} onChange={e=>{if(audioRef.current)audioRef.current.currentTime=Number(e.target.value)}}/><span>{duration(audioLength)}</span></div><Volume2 size={16} className="mini-volume-icon"/><input className="mini-volume" type="range" aria-label="Volume" min="0" max="1" step="0.05" value={volume} onChange={e=>{setVolume(Number(e.target.value));if(muted)setMuted(false)}}/><button className="mini-close" aria-label="Fechar player e parar áudio" onClick={stopAudio}><X size={19}/></button>{audioError&&<div className="audio-error" role="alert">Não foi possível carregar o áudio. Verifique o arquivo em public/audio.</div>}</aside>}
-  {selectedArtist&&<div className="modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedArtist(null)}}><div className="artist-modal" role="dialog" aria-modal="true" aria-labelledby="artist-modal-title"><button className="modal-close" autoFocus onClick={()=>setSelectedArtist(null)} aria-label="Fechar ficha de artista"><X size={21}/></button><div className="modal-art" style={{'--poster':selectedArtist.tone}}><div className="modal-art-ring"/>{selectedArtist.photo?<img className="modal-photo" src={asset(selectedArtist.photo)} alt={`Fotografia de ${selectedArtist.name}`}/>:<Mic2 size={64} strokeWidth={.9}/>}<span>ARQUIVO SONORO <b>{states.find(s=>s.id===selectedArtist.state)?.code}</b></span></div><div className="modal-content"><SmallLabel>FICHA DE ACERVO / {selectedArtist.era}</SmallLabel><h2 id="artist-modal-title">{selectedArtist.name}</h2><div className="modal-tags"><span>{selectedArtist.tag}</span><span>{states.find(s=>s.id===selectedArtist.state)?.title}</span></div><p>{selectedArtist.bio}</p><div className="modal-fact"><span>OBRA EM DESTAQUE</span><strong>{selectedArtist.work}</strong></div><div className="modal-fact"><span>VOCÊ SABIA?</span><strong>{selectedArtist.curiosity}</strong></div><div className="modal-buttons"><a href={selectedArtist.source} target="_blank" rel="noreferrer" className="button-primary">CONHECER A FONTE <ExternalLink size={17}/></a><button className="text-link" onClick={()=>{setSelectedArtist(null);navigate('state',selectedArtist.state)}}>VER TERRITÓRIO <ArrowRight size={17}/></button></div><p className="modal-ethics">Músicas comerciais não são reproduzidas sem licença. O módulo de escuta dos territórios contém somente estudos sonoros didáticos originais.</p></div></div></div>}
+  {selectedArtist&&<div className="modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedArtist(null)}}><div className="artist-modal" role="dialog" aria-modal="true" aria-labelledby="artist-modal-title"><button className="modal-close" autoFocus onClick={()=>setSelectedArtist(null)} aria-label="Fechar ficha de artista"><X size={21}/></button><div className="modal-art" style={{'--poster':selectedArtist.tone}}><div className="modal-art-ring"/>{selectedArtist.photo?<img className="modal-photo" src={asset(selectedArtist.photo)} alt={`Fotografia de ${selectedArtist.name}`}/>:<Mic2 size={64} strokeWidth={.9}/>}<span>ARQUIVO SONORO <b>{states.find(s=>s.id===selectedArtist.state)?.code}</b></span></div><div className="modal-content"><SmallLabel>FICHA DE ACERVO / {selectedArtist.era}</SmallLabel><h2 id="artist-modal-title">{selectedArtist.name}</h2><div className="modal-tags"><span>{selectedArtist.tag}</span><span>{states.find(s=>s.id===selectedArtist.state)?.title}</span></div><p>{selectedArtist.bio}</p><div className="modal-fact"><span>OBRA EM DESTAQUE</span><strong>{selectedArtist.work}</strong></div><div className="modal-fact"><span>VOCÊ SABIA?</span><strong>{selectedArtist.curiosity}</strong></div><ArtistListening artist={selectedArtist}/><div className="modal-buttons"><a href={selectedArtist.source} target="_blank" rel="noreferrer" className="button-primary">CONHECER A FONTE <ExternalLink size={17}/></a><button className="text-link" onClick={()=>{setSelectedArtist(null);navigate('state',selectedArtist.state)}}>VER TERRITÓRIO <ArrowRight size={17}/></button></div><p className="modal-ethics">As músicas dos artistas são incorporadas pelo Spotify. Os áudios dos territórios são estudos sonoros originais.</p></div></div></div>}
  </div>
 }
 function ArrowUpIcon(){return <MoveUpRight size={18} strokeWidth={1.7} aria-hidden="true"/>}
