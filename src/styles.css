@@ -602,184 +602,151 @@
 
 }
 
-/* ECOS FIX 2026-10 — instrumentos e player responsivo.
-   Acrescentado ao final do styles.css; mantém as demais personalizações. */
-
-/* O componente de instrumentos não deve criar um corredor vazio em janelas estreitas. */
-.instrument-shell { min-width: 0; }
-.instrument-spotlight { min-width: 0; scroll-margin-top: 88px; }
-.instrument-selector button { min-width: 0; }
-.instrument-selector button strong { overflow-wrap: anywhere; }
-
-@media (max-width: 1350px) {
-  .instrument-shell {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-  }
-  .instrument-selector {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scroll-snap-type: x proximity;
-  }
-  .instrument-selector button {
-    flex: 0 0 clamp(145px, 20%, 215px);
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 10px;
-    min-height: 74px;
-    padding: 16px;
-    scroll-snap-align: start;
-    border-bottom: 0;
-    border-right: 1px solid #ccbb9f;
-  }
-  .instrument-selector button strong {
-    flex: 1;
-    font-size: clamp(14px, 1.5vw, 18px);
-    line-height: 1.25;
-    word-break: normal;
-  }
-  .instrument-selector button svg { display: none; }
-  .instrument-spotlight {
-    width: 100%;
-    min-height: 0;
-  }
-  .instrument-illustration { height: clamp(220px, 30vw, 355px); }
-}
+/* =====================================
+   MINI PLAYER MELHOR NO CELULAR
+   ===================================== */
 
 @media (max-width: 650px) {
-  .instrument-selector button {
-    flex-basis: 145px;
-    min-height: 66px;
-    padding: 12px 13px;
-  }
-  .instrument-selector button strong { font-size: 14px; }
-  .spotlight-header { flex-wrap: wrap; }
-  .instrument-illustration { height: 235px; }
-  .spotlight-info { padding: 0 20px 24px; }
-  .spotlight-info h2 { font-size: clamp(30px, 8vw, 39px); }
-  .spotlight-metadata { gap: 14px; }
-  .listen-pill { min-width: 0; width: 100%; }
-}
-
-/* Mini player sempre legível e tocável em celulares e janelas pequenas. */
-.mini-meta { min-width: 0; }
-.mini-meta strong, .mini-meta span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-@media (max-width: 900px) {
   .mini-player {
     display: grid;
-    grid-template-columns: 40px minmax(0, 1fr) 42px 32px;
+    grid-template-columns: 36px minmax(0, 1fr) 38px 30px;
     grid-template-areas:
-      'cover title control close'
-      'seek seek seek seek';
+      "art meta play close"
+      "progress progress progress progress";
     align-items: center;
-    column-gap: 10px;
-    row-gap: 8px;
-    min-height: 0;
-    padding: 10px max(14px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));
-    box-sizing: border-box;
+    gap: 10px;
+    padding: 10px 12px;
+    min-height: auto;
   }
-  .mini-player-art { grid-area: cover; width: 40px; height: 40px; }
-  .mini-player-art svg { width: 24px; height: 24px; }
-  .mini-meta { grid-area: title; width: 100%; min-width: 0; }
-  .mini-meta strong { font-size: 15px; line-height: 1.2; }
-  .mini-meta span { font-size: 11px; line-height: 1.3; }
-  .mini-control { grid-area: control; width: 40px; height: 40px; }
-  .mini-close { grid-area: close; margin: 0; padding: 5px; }
-  .mini-progress { grid-area: seek; display: flex; width: 100%; min-width: 0; margin: 0; gap: 10px; }
-  .mini-progress input { width: 100%; min-width: 0; }
-  .mini-progress span { font-size: 10px; flex-shrink: 0; }
-  .mini-skip, .mini-volume-icon, .mini-volume { display: none; }
-  .audio-error { left: 12px; right: 12px; max-width: none; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
-  .app-shell:has(.mini-player) .floating-journey { bottom: calc(110px + env(safe-area-inset-bottom, 0px)); }
-  .app-shell:has(.mini-player) main { padding-bottom: 94px; }
-}
-@media (max-width: 430px) {
-  .mini-player { column-gap: 8px; grid-template-columns: 36px minmax(0, 1fr) 38px 28px; }
-  .mini-player-art { width: 36px; height: 36px; }
-  .mini-control { width: 38px; height: 38px; }
-  .mini-meta strong { font-size: 14px; }
-  .mini-meta span { font-size: 10px; }
-  .app-shell:has(.mini-player) .floating-journey { display: none; }
+
+  .mini-player-art {
+    grid-area: art;
+    width: 36px;
+    height: 36px;
+  }
+
+  .mini-meta {
+    grid-area: meta;
+    min-width: 0;
+  }
+
+  .mini-meta strong,
+  .mini-meta span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mini-meta strong {
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .mini-meta span {
+    font-size: 9px;
+    margin-top: 4px;
+  }
+
+  .mini-control {
+    grid-area: play;
+    width: 38px;
+    height: 38px;
+  }
+
+  .mini-close {
+    grid-area: close;
+    margin-left: 0;
+  }
+
+  .mini-progress {
+    grid-area: progress;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .mini-progress span {
+    font-size: 10px;
+    white-space: nowrap;
+  }
+
+  .mini-skip,
+  .mini-volume,
+  .mini-volume-icon {
+    display: none;
+  }
+
+  .audio-error {
+    right: 12px;
+    left: 12px;
+    bottom: 90px;
+    max-width: none;
+  }
 }
 
-/* ECOS_SPOTIFY_ARTISTAS_2026 — escuta nas fichas de artistas */
-.artist-listening {
-  margin: 24px 0 18px;
-  padding: 18px;
-  border: 1px solid #d7c2a5;
-  border-radius: 16px;
-  background: #f0e4d0;
-  min-width: 0;
-}
-.artist-listening-head > span {
-  font-size: 9px;
-  font-weight: 800;
-  line-height: 1.4;
-  letter-spacing: .14em;
-  color: #9a5b38;
-}
-.artist-listening-head h3 {
-  margin: 9px 0 5px;
-  font-family: Georgia, serif;
-  font-size: clamp(20px, 3vw, 26px);
-  font-weight: 500;
-  line-height: 1.2;
-  color: #43271d;
-}
-.artist-listening-head p {
-  margin: 0 0 14px;
-  font-size: 12px;
-  line-height: 1.55;
-  color: #765d4a;
-}
-.artist-listening-bottom {
+
+/* CORREÇÃO DEFINITIVA - INSTRUMENTOS */
+
+.instrument-shell {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.instrument-selector {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.instrument-selector button {
+  display: flex;
+  flex: 1 0 150px;
+  flex-direction: row;
   align-items: center;
-  gap: 9px 16px;
-  padding-top: 12px;
+  justify-content: flex-start;
+  gap: 10px;
+  width: auto;
+  min-width: 0;
+  min-height: 76px;
+  padding: 14px 16px;
+  border-right: 1px solid #ccbb9f;
+  border-bottom: 0;
 }
-.artist-listening-bottom p {
-  flex: 1 1 190px;
-  margin: 0;
-  font-size: 10px;
-  line-height: 1.6;
-  color: #725945;
+
+.instrument-selector button strong {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  line-height: 1.3;
+  overflow-wrap: normal;
+  word-break: normal;
 }
-.artist-listening-bottom a {
-  color: #98502c;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .06em;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+
+.instrument-selector button svg {
+  display: none;
 }
-.artist-listening-bottom a:focus-visible {
-  outline: 2px solid #a84f2b;
-  outline-offset: 5px;
+
+.instrument-spotlight {
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
 }
+
 @media (max-width: 650px) {
-  .artist-listening {
-    margin: 18px 0 12px;
-    padding: 13px;
-    border-radius: 12px;
+  .instrument-selector button {
+    flex: 0 0 145px;
+    min-height: 66px;
+    padding: 12px;
   }
-  .artist-listening-head h3 {font-size: 22px;}
-  .artist-listening-bottom {align-items: flex-start; flex-direction: column;}
-  .artist-listening-bottom a {min-height: 38px; display: inline-flex; align-items: center;}
+
+  .instrument-selector button strong {
+    font-size: 14px;
+  }
 }

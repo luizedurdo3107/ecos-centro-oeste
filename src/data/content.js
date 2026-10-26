@@ -80,7 +80,13 @@ export const instruments=[
   {id:'reco',name:'Reco-reco',tag:'Percussão raspada',state:'Siriri e outras práticas',track:'reco',detail:'Instrumento de percussão usado para marcar padrões rítmicos em manifestações populares.',how:'Uma haste raspa uma superfície com sulcos e produz uma sequência de atritos.',curiosity:'Seu timbre depende do material, do formato e da velocidade da raspagem.'},
 ];
 export const tracks={
- 'intro':{title:'Trilha de abertura — Ecos do Centro-Oeste',artist:'Composição instrumental original · sem voz sintética',genre:'Introdução instrumental',url:'/audio/intro-trilha.mp3',note:'Trilha original de ambientação; o texto da introdução está disponível na tela. Para ter narração natural, grave uma pessoa e atualize o arquivo.'},
+  'intro-demo': {
+  title: 'Um território, muitas vozes',
+  artist: 'Introdução da experiência',
+  genre: 'Narração',
+  url: '/audio/intro-narracao.mp3',
+  note: 'Narração de abertura da experiência. Se quiser, depois você pode substituir por uma gravação humana.'},
+ 'intro':{title:'Um território, muitas vozes',artist:'Narração em português • voz sintetizada',genre:'Introdução narrada',url:'/audio/intro-narration.mp3',note:'Arquivo local de voz sintetizada com arranjo instrumental original. Transcrição disponível na página.'},
  'goias-demo':{title:'Caminhos de corda',artist:'Estudo sonoro original',genre:'Cordas sintetizadas',url:'/audio/paisagem-goias.mp3',note:'Composição didática sintetizada para a mostra; não é gravação regional ou de artista comercial.'},
  'mt-demo':{title:'Rios em pulso',artist:'Estudo sonoro original',genre:'Cordas e percussão sintetizadas',url:'/audio/paisagem-mato-grosso.mp3',note:'Composição didática original. Para ouvir cururu ou siriri reais, adicione gravações autorizadas.'},
  'ms-demo':{title:'Vento sobre as águas',artist:'Estudo sonoro original',genre:'Acordes sintetizados',url:'/audio/paisagem-mato-grosso-do-sul.mp3',note:'Composição didática original; não reproduz uma performance tradicional de chamamé.'},
