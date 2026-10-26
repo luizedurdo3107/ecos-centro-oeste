@@ -818,3 +818,162 @@
   .artist-listening-bottom {align-items: flex-start; flex-direction: column;}
   .artist-listening-bottom a {min-height: 38px; display: inline-flex; align-items: center;}
 }
+
+/* ECOS_INSTRUMENTOS_LAYOUT_UNIFICADO_V2:INICIO */
+/* Mantém o mesmo layout em telas grandes e pequenas.
+   Corrige a grade antiga 30% / 70%, que comprimia os nomes no desktop. */
+.instruments-scene .instrument-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.instruments-scene .instrument-selector {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: 100%;
+  min-width: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+}
+
+.instruments-scene .instrument-selector button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  flex: initial;
+  width: auto;
+  min-width: 0;
+  min-height: 76px;
+  padding: 13px clamp(10px, 1.25vw, 20px);
+  border-bottom: 0;
+  border-right: 1px solid #ccbb9f;
+  scroll-snap-align: none;
+}
+
+.instruments-scene .instrument-selector button:last-child {
+  border-right: 0;
+}
+
+.instruments-scene .instrument-selector button > span {
+  flex: 0 0 auto;
+  font-size: clamp(17px, 1.6vw, 23px);
+}
+
+.instruments-scene .instrument-selector button > strong {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: clamp(14px, 1.22vw, 19px);
+  line-height: 1.25;
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: none;
+}
+
+.instruments-scene .instrument-selector button svg {
+  display: none;
+}
+
+.instruments-scene .instrument-spotlight {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.instruments-scene .instrument-illustration {
+  height: clamp(240px, 24vw, 355px);
+}
+
+.instruments-scene .spotlight-info {
+  min-width: 0;
+}
+
+.instruments-scene .spotlight-info > div {
+  min-width: 0;
+}
+
+.instruments-scene .listen-pill {
+  max-width: 100%;
+}
+
+/* Tablets: abas deslizam horizontalmente em vez de esmagar os nomes. */
+@media (max-width: 1000px) {
+  .instruments-scene .instrument-selector {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .instruments-scene .instrument-selector button {
+    flex: 0 0 clamp(150px, 23vw, 205px);
+    scroll-snap-align: start;
+    min-height: 70px;
+  }
+
+  .instruments-scene .spotlight-info {
+    display: block;
+  }
+
+  .instruments-scene .listen-pill {
+    margin-top: 20px;
+  }
+}
+
+/* Celulares: texto legível, abas tocáveis e ilustração no tamanho certo. */
+@media (max-width: 650px) {
+  .instruments-scene .instrument-selector button {
+    flex-basis: clamp(148px, 51vw, 190px);
+    min-height: 66px;
+    padding: 12px;
+  }
+
+  .instruments-scene .instrument-selector button > strong {
+    font-size: 14px;
+  }
+
+  .instruments-scene .instrument-illustration {
+    height: 235px;
+  }
+
+  .instruments-scene .spotlight-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 20px 18px 0;
+  }
+
+  .instruments-scene .spotlight-info {
+    padding: 3px 19px 26px;
+  }
+
+  .instruments-scene .spotlight-info h2 {
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .instruments-scene .spotlight-metadata {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .instruments-scene .listen-pill {
+    min-width: 0;
+    width: 100%;
+    padding: 8px;
+  }
+
+  .instruments-scene .listen-pill > span:nth-child(2) {
+    white-space: normal;
+  }
+}
+/* ECOS_INSTRUMENTOS_LAYOUT_UNIFICADO_V2:FIM */
