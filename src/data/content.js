@@ -80,15 +80,16 @@ export const instruments=[
   {id:'reco',name:'Reco-reco',tag:'Percussão raspada',state:'Siriri e outras práticas',track:'reco',detail:'Instrumento de percussão usado para marcar padrões rítmicos em manifestações populares.',how:'Uma haste raspa uma superfície com sulcos e produz uma sequência de atritos.',curiosity:'Seu timbre depende do material, do formato e da velocidade da raspagem.'},
 ];
 export const tracks={
- 'goias-demo':{title:'Caminhos de corda',artist:'Estudo sonoro original',genre:'Cordas sintetizadas',url:'/audio/paisagem-goias.wav',note:'Composição didática sintetizada para a mostra; não é gravação regional ou de artista comercial.'},
- 'mt-demo':{title:'Rios em pulso',artist:'Estudo sonoro original',genre:'Cordas e percussão sintetizadas',url:'/audio/paisagem-mato-grosso.wav',note:'Composição didática original. Para ouvir cururu ou siriri reais, adicione gravações autorizadas.'},
- 'ms-demo':{title:'Vento sobre as águas',artist:'Estudo sonoro original',genre:'Acordes sintetizados',url:'/audio/paisagem-mato-grosso-do-sul.wav',note:'Composição didática original; não reproduz uma performance tradicional de chamamé.'},
- 'df-demo':{title:'Cidade em movimento',artist:'Estudo sonoro original',genre:'Riff sintetizado',url:'/audio/paisagem-distrito-federal.wav',note:'Composição didática original, inspirada apenas na ideia de um riff. Não contém música de bandas comerciais.'},
- viola:{title:'Cordas dedilhadas — demonstração',artist:'Síntese didática',genre:'Cordas',url:'/audio/viola-caipira.wav',note:'Áudio sintetizado. Não é a gravação de uma viola caipira real.'},
- cocho:{title:'Cordas graves — demonstração',artist:'Síntese didática',genre:'Cordas e pulso',url:'/audio/viola-cocho.wav',note:'Síntese didática. Não substitui a escuta de mestres da viola de cocho.'},
- sanfona:{title:'Fole — demonstração',artist:'Síntese didática',genre:'Teclas e palhetas',url:'/audio/sanfona.wav',note:'Simulação eletrônica do efeito de notas sustentadas; não é um acordeão gravado.'},
- ganza:{title:'Pulso de chocalho — demonstração',artist:'Síntese didática',genre:'Percussão',url:'/audio/ganza.wav',note:'Ruído sintetizado para demonstrar o princípio rítmico de um chocalho.'},
- reco:{title:'Raspagem — demonstração',artist:'Síntese didática',genre:'Percussão',url:'/audio/reco-reco.wav',note:'Ruído sintetizado para demonstrar a ideia da percussão raspada.'},
+ 'intro':{title:'Trilha de abertura — Ecos do Centro-Oeste',artist:'Composição instrumental original · sem voz sintética',genre:'Introdução instrumental',url:'/audio/intro-trilha.mp3',note:'Trilha original de ambientação; o texto da introdução está disponível na tela. Para ter narração natural, grave uma pessoa e atualize o arquivo.'},
+ 'goias-demo':{title:'Caminhos de corda',artist:'Estudo sonoro original',genre:'Cordas sintetizadas',url:'/audio/paisagem-goias.mp3',note:'Composição didática sintetizada para a mostra; não é gravação regional ou de artista comercial.'},
+ 'mt-demo':{title:'Rios em pulso',artist:'Estudo sonoro original',genre:'Cordas e percussão sintetizadas',url:'/audio/paisagem-mato-grosso.mp3',note:'Composição didática original. Para ouvir cururu ou siriri reais, adicione gravações autorizadas.'},
+ 'ms-demo':{title:'Vento sobre as águas',artist:'Estudo sonoro original',genre:'Acordes sintetizados',url:'/audio/paisagem-mato-grosso-do-sul.mp3',note:'Composição didática original; não reproduz uma performance tradicional de chamamé.'},
+ 'df-demo':{title:'Cidade em movimento',artist:'Estudo sonoro original',genre:'Riff sintetizado',url:'/audio/paisagem-distrito-federal.mp3',note:'Composição didática original, inspirada apenas na ideia de um riff. Não contém música de bandas comerciais.'},
+ viola:{title:'Cordas dedilhadas — demonstração',artist:'Síntese didática',genre:'Cordas',url:'/audio/viola-caipira.mp3',note:'Áudio sintetizado. Não é a gravação de uma viola caipira real.'},
+ cocho:{title:'Cordas graves — demonstração',artist:'Síntese didática',genre:'Cordas e pulso',url:'/audio/viola-cocho.mp3',note:'Síntese didática. Não substitui a escuta de mestres da viola de cocho.'},
+ sanfona:{title:'Fole — demonstração',artist:'Síntese didática',genre:'Teclas e palhetas',url:'/audio/sanfona.mp3',note:'Simulação eletrônica do efeito de notas sustentadas; não é um acordeão gravado.'},
+ ganza:{title:'Pulso de chocalho — demonstração',artist:'Síntese didática',genre:'Percussão',url:'/audio/ganza.mp3',note:'Ruído sintetizado para demonstrar o princípio rítmico de um chocalho.'},
+ reco:{title:'Raspagem — demonstração',artist:'Síntese didática',genre:'Percussão',url:'/audio/reco-reco.mp3',note:'Ruído sintetizado para demonstrar a ideia da percussão raspada.'},
 };
 export const timeline=[
  {date:'Antes dos discos',kind:'Memória viva',headline:'A música já estava aqui.',description:'Cantos, saberes, festas e formas de transmissão oral existem muito antes da gravação comercial. São diversas tradições, não uma origem única.',state:null},

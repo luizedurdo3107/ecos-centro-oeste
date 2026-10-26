@@ -15,6 +15,49 @@ function Brand({onClick}){return <button className="brand" onClick={onClick} ari
 function FancyArrow({light=false}){return <span className={`arrow-round ${light?'light':''}`}><ArrowRight size={19}/></span>}
 function SectionIntro({chapter,kicker,title,description}) { return <header className="section-intro"><div className="section-overline"><SmallLabel>{kicker}</SmallLabel><span>{chapter}</span></div><h1 className="display-title">{title}</h1><p>{description}</p></header> }
 
+// ECOS_SPOTIFY_ARTISTAS_2026 — faixas oficiais incorporadas sem armazenar arquivos comerciais.
+const museumSongs = {
+  zeze: { title: 'É o Amor', id: '2UchMkUxan22i7cHTbUjLp' },
+  marilia: { title: 'Infiel', id: '6UYrC5DlTARibZ62U1r59K' },
+  flor: { title: 'Siriri: Quebrando Milho', id: '1vp1adPEvUey0sXMAWfL3L' },
+  almir: { title: 'Tocando em Frente', id: '3ZRRIlSvOctKY5NqlRESgA' },
+  helena: { title: 'Quatro Horas da Madrugada', id: '0qrOMKe7GBUtPcWfQ9QTu8' },
+  tete: { title: 'Escrito nas Estrelas', id: '4OUzN70Gf32FUhm0U5FipL' },
+  legiao: { title: 'Tempo Perdido', id: '3p71m3r3cFSiatmxrtywHo' },
+  capital: { title: 'Primeiros Erros (Chove) — ao vivo', id: '1UmZ5x2HiFs8rqVFTOo0Xm' },
+  plebe: { title: 'Até Quando Esperar', id: '4qXPxKH9dljeTvLuI6jMB0' },
+};
+
+function ArtistListening({ artist }) {
+  const song = museumSongs[artist.id];
+  if (!song) return null;
+  const songUrl = `https://open.spotify.com/track/${song.id}`;
+  return (
+    <section className="artist-listening" aria-label={`Escuta oficial: ${artist.name}`}>
+      <div className="artist-listening-head">
+        <span>ESTAÇÃO DE ESCUTA · ACERVO MUSICAL</span>
+        <h3>Ouça a voz desta história.</h3>
+        <p>{song.title} · {artist.name}</p>
+      </div>
+      <iframe
+        key={artist.id}
+        title={`Spotify — ${song.title}, ${artist.name}`}
+        src={`https://open.spotify.com/embed/track/${song.id}?utm_source=generator`}
+        width="100%"
+        height="152"
+        style={{ border: 0, display: 'block', borderRadius: '12px' }}
+        loading="lazy"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+      <div className="artist-listening-bottom">
+        <p>Reprodução oficial via Spotify. Requer internet; conforme a conta e a faixa, pode tocar só uma prévia.</p>
+        <a href={songUrl} target="_blank" rel="noopener noreferrer">ABRIR NO SPOTIFY ↗</a>
+      </div>
+    </section>
+  );
+}
+
 export default function App(){
  const [route,setRoute]=useState(routeFromHash);
  const [menuOpen,setMenuOpen]=useState(false);
@@ -27,34 +70,107 @@ export default function App(){
  const [artistFilter,setArtistFilter]=useState('all'),[selectedArtist,setSelectedArtist]=useState(null);
  const [selectedInstrument,setSelectedInstrument]=useState('cocho');
  const [quizIndex,setQuizIndex]=useState(0),[quizChoice,setQuizChoice]=useState(null),[score,setScore]=useState(0),[quizDone,setQuizDone]=useState(false);
- const [narrating,setNarrating]=useState(false),[fullscreen,setFullscreen]=useState(false);
+ const [fullscreen,setFullscreen]=useState(false);
  const audioRef=useRef(null), mainRef=useRef(null);
 
  useEffect(()=>{const onHash=()=>{setRoute(routeFromHash());setMenuOpen(false);window.scrollTo({top:0,behavior:'instant'})};window.addEventListener('hashchange',onHash);return()=>window.removeEventListener('hashchange',onHash)},[]);
  useEffect(()=>{document.documentElement.classList.toggle('reduced-motion',reduceMotion);localStorage.setItem('ecos-reduce-motion',reduceMotion?'1':'0')},[reduceMotion]);
  useEffect(()=>{if(audioRef.current) audioRef.current.volume=volume},[volume]);
- useEffect(()=>{if(audioRef.current) audioRef.current.muted=muted;if(muted){window.speechSynthesis?.cancel();setNarrating(false)}},[muted]);
- useEffect(()=>{const onKey=(e)=>{if(e.key==='Escape'){setSelectedArtist(null);setMenuOpen(false);stopNarration()}};document.addEventListener('keydown',onKey);return()=>document.removeEventListener('keydown',onKey)},[]);
+ useEffect(()=>{
+  if(audioRef.current) audioRef.current.muted = muted;
+},[muted]);
+ useEffect(()=>{const onKey=(e)=>{if(e.key==='Escape'){setSelectedArtist(null);setMenuOpen(false);stopNarration()}};document.addEventListener('keydown',onKey);return()=>document.removeEventListener('keydown',onKey)},[activeTrack]);
  useEffect(()=>{const onFullscreen=()=>setFullscreen(Boolean(document.fullscreenElement));document.addEventListener('fullscreenchange',onFullscreen);return()=>document.removeEventListener('fullscreenchange',onFullscreen)},[]);
  useEffect(()=>{document.title=`${labels[route.page]} | Ecos do Centro-Oeste`},[route]);
- const navigate=(page,id)=>{window.speechSynthesis?.cancel();setNarrating(false);const target=page==='state'?`state/${id}`:page; if(location.hash!==`#${target}`)location.hash=target;else{setRoute(routeFromHash());window.scrollTo({top:0,behavior:'smooth'})}setMenuOpen(false)};
- const stopAudio=()=>{const a=audioRef.current;if(a){a.pause();a.removeAttribute('src');a.load()}setActiveTrack(null);setPlaying(false);setCurrentTime(0);setAudioLength(0);setAudioError(false)};
- function stopNarration(){window.speechSynthesis?.cancel();setNarrating(false)}
- const reset=()=>{stopAudio();stopNarration();setQuizIndex(0);setQuizChoice(null);setScore(0);setQuizDone(false);setSelectedArtist(null);setArtistFilter('all');setSelectedEra(0);setFeaturedRegion('mato-grosso');navigate('home')};
- const playTrack=async(id)=>{
-   const item=tracks[id]; const a=audioRef.current;if(!item||!a)return;
-   stopNarration();setAudioError(false);
-   if(activeTrack===id){if(a.paused){try{await a.play();setPlaying(true)}catch{setAudioError(true);setPlaying(false)}}else{a.pause();setPlaying(false)}return}
-   a.pause();a.src=asset(item.url);a.load();setActiveTrack(id);setCurrentTime(0);setAudioLength(0);
-   if(muted){setMuted(false);a.muted=false}
-   try{await a.play();setPlaying(true)}catch{setAudioError(true);setPlaying(false)}
+const navigate=(page,id)=>{
+  const target=page==='state' ? `state/${id}` : page;
+  // Ao deixar a introdução, a trilha inicial para; outras faixas seguem no player.
+  if (activeTrack === 'intro' && page !== 'intro') stopAudio();
+  if(location.hash!==`#${target}`){
+    location.hash=target;
+  } else {
+    setRoute(routeFromHash());
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  setMenuOpen(false);
+};
+ const stopAudio = () => {
+  const audio = audioRef.current;
+  if (audio) {
+   audio.pause();
+   audio.removeAttribute('src');
+   audio.load();
+  }
+  setActiveTrack(null);
+  setPlaying(false);
+  setCurrentTime(0);
+  setAudioLength(0);
+  setAudioError(false);
  };
- const toggleNarration=()=>{
-   if(narrating){stopNarration();return}
-   if(!('speechSynthesis' in window))return;
-   if(playing)audioRef.current?.pause(),setPlaying(false);
-   const u=new SpeechSynthesisUtterance('O Centro-Oeste é um território de muitas vozes. Das tradições indígenas e afro-brasileiras às culturas rurais, fronteiriças e urbanas, seus sons contam histórias diversas. Em Goiás, a viola e o sertanejo. Em Mato Grosso, cururu e siriri. Em Mato Grosso do Sul, música pantaneira e chamamé. No Distrito Federal, uma cena urbana que fez história.');
-   u.lang='pt-BR';u.rate=.9;u.onend=()=>setNarrating(false);u.onerror=()=>setNarrating(false);window.speechSynthesis.cancel();window.speechSynthesis.speak(u);setNarrating(true);
+
+ const stopNarration = () => {
+  if (activeTrack === 'intro') stopAudio();
+ };
+
+ const reset = () => {
+  stopAudio();
+  setQuizIndex(0);
+  setQuizChoice(null);
+  setScore(0);
+  setQuizDone(false);
+  setSelectedArtist(null);
+  setArtistFilter('all');
+  setSelectedEra(0);
+  setFeaturedRegion('mato-grosso');
+  navigate('home');
+ };
+
+ const playTrack = async (id) => {
+  const item = tracks[id];
+  const audio = audioRef.current;
+  if (!item || !audio) return;
+
+  setAudioError(false);
+  if (activeTrack === id) {
+   if (audio.paused) {
+    try { await audio.play(); } catch { setPlaying(false); setAudioError(true); }
+   } else {
+    audio.pause();
+   }
+   return;
+  }
+
+  audio.pause();
+  audio.src = asset(item.url);
+  audio.load();
+  setActiveTrack(id);
+  setCurrentTime(0);
+  setAudioLength(0);
+  if (muted) {
+   setMuted(false);
+   audio.muted = false;
+  }
+  try {
+   await audio.play();
+  } catch {
+   setPlaying(false);
+   setAudioError(true);
+  }
+ };
+
+ // Abertura usa trilha instrumental local, sem voz sintetizada.
+ const toggleNarration = () => playTrack('intro');
+
+ const selectInstrument = (id) => {
+  setSelectedInstrument(id);
+  if (window.innerWidth <= 1350) {
+   window.requestAnimationFrame(() => {
+    document.getElementById('instrument-detail')?.scrollIntoView({
+     behavior: reduceMotion ? 'auto' : 'smooth',
+     block: 'start'
+    });
+   });
+  }
  };
  const doFullscreen=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch{/* browsers may disallow fullscreen */}};
  const progressMap={home:0,intro:1,map:2,state:3,timeline:4,artists:5,instruments:6,quiz:7,final:8};
@@ -67,11 +183,27 @@ export default function App(){
  const guide=mainPages.filter(k=>k!=='home');
  const playlistIds=['goias-demo','mt-demo','ms-demo','df-demo'];
  const inPlaylist=playlistIds.includes(activeTrack);
+ const narrating=playing && activeTrack==='intro';
  const changeTrack=(delta)=>{const i=playlistIds.indexOf(activeTrack);if(i!==-1)playTrack(playlistIds[(i+delta+playlistIds.length)%playlistIds.length]);};
+  useEffect(() => {
+    if (selectedArtist && audioRef.current && !audioRef.current.paused) {
+      audioRef.current.pause();
+    }
+  }, [selectedArtist]);
+
 
  return <div className={`app-shell ${route.page==='home'?'at-home':''}`}>
   <a href="#main" className="skip-link">Pular para o conteúdo</a>
-  <audio ref={audioRef} preload="metadata" onPlay={()=>setPlaying(true)} onPause={()=>setPlaying(false)} onTimeUpdate={e=>setCurrentTime(e.currentTarget.currentTime)} onLoadedMetadata={e=>setAudioLength(e.currentTarget.duration||0)} onEnded={()=>setPlaying(false)} onError={()=>{if(activeTrack)setAudioError(true)}} />
+  <audio
+   ref={audioRef}
+   preload="metadata"
+   onPlay={()=>setPlaying(true)}
+   onPause={()=>setPlaying(false)}
+   onTimeUpdate={e=>setCurrentTime(e.currentTarget.currentTime)}
+   onLoadedMetadata={e=>setAudioLength(e.currentTarget.duration||0)}
+   onEnded={()=>setPlaying(false)}
+   onError={()=>{ if(activeTrack) { setAudioError(true); setPlaying(false); } }}
+  />
   <header className={`site-header ${route.page==='home'?'home-header':''}`}>
     <div className="header-container"><Brand onClick={()=>navigate('home')} />
     <nav className="desktop-nav" aria-label="Navegação principal">
@@ -112,8 +244,8 @@ export default function App(){
       <div className="intro-copy"><SmallLabel>CAPÍTULO 01 — O ENCONTRO</SmallLabel><h1 className="display-title">UM TERRITÓRIO.<br/><em>MUITAS VOZES.</em></h1>
        <p className="intro-lead">No coração do Brasil, a música se faz de encontros. Cada estrada, cidade, rio e comunidade carrega uma maneira própria de cantar e de contar histórias.</p>
        <p>Tradições indígenas, afro-brasileiras, europeias, rurais, urbanas e fronteiriças participam dessa diversidade — com histórias diferentes, que merecem ser ouvidas sem serem reduzidas a um único som.</p>
-       <div className="narration-box"><div className="narration-icon"><Mic2 size={21}/></div><div><strong>Ouve essa história?</strong><span>Narração opcional · transcrição logo abaixo</span></div><button className="round-play" onClick={toggleNarration} disabled={!('speechSynthesis' in window)} aria-label={narrating?'Parar narração':'Ouvir introdução'}>{narrating?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</button></div>
-       <details className="transcript"><summary><Captions size={16}/> LER TRANSCRIÇÃO DA NARRAÇÃO <ChevronDown size={15}/></summary><p>O Centro-Oeste é um território de muitas vozes. Das tradições indígenas e afro-brasileiras às culturas rurais, fronteiriças e urbanas, seus sons contam histórias diversas. Em Goiás, a viola e o sertanejo. Em Mato Grosso, cururu e siriri. Em Mato Grosso do Sul, música pantaneira e chamamé. No Distrito Federal, uma cena urbana que fez história.</p></details>
+       <div className="narration-box"><div className="narration-icon"><Mic2 size={21}/></div><div><strong>Ouça o som desta história</strong><span>Trilha instrumental · leia a apresentação abaixo</span></div><button className="round-play" onClick={toggleNarration} aria-label={narrating?'Pausar trilha de abertura':'Ouvir trilha de abertura'}>{narrating?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</button></div>
+       <details className="transcript"><summary><Captions size={16}/> LER O CONTEXTO DA INTRODUÇÃO <ChevronDown size={15}/></summary><p>O Centro-Oeste é um território de muitas vozes. Das tradições indígenas e afro-brasileiras às culturas rurais, fronteiriças e urbanas, seus sons contam histórias diversas. Em Goiás, a viola e o sertanejo. Em Mato Grosso, cururu e siriri. Em Mato Grosso do Sul, música pantaneira e chamamé. No Distrito Federal, uma cena urbana que fez história.</p></details>
        <button className="button-primary" onClick={()=>navigate('map')}>CONHECER OS SONS DA REGIÃO <ArrowRight size={18}/></button>
       </div>
       <div className="intro-collage"><div className="intro-large-img"><img src={asset('/images/cerrado-por-do-sol.jpg')} alt="Paisagem criada de Cerrado ao entardecer"/></div><div className="intro-patch"><span>04</span><small>TERRITÓRIOS</small></div><div className="intro-artline"><SoundWave/></div><div className="intro-mini-img"><img src={asset('/images/mato-grosso.jpg')} alt="Ilustração de paisagem com rio"/></div><div className="intro-stamp">O SOM<br/>TAMBÉM<br/>É MEMÓRIA.</div></div>
@@ -156,7 +288,7 @@ export default function App(){
    </div></section>}
 
    {route.page==='instruments'&&<section className="instruments-scene paper-scene"><div className="container"><SectionIntro chapter="CAPÍTULO 05 / 08" kicker="INSTRUMENTOS QUE CONTAM HISTÓRIAS" title={<>ANTES DA VOZ,<br/><em>O SOM.</em></>} description="Madeira, cordas, fole, grãos e superfícies de atrito: o som nasce do movimento. Selecione um instrumento para descobrir como ele fala."/>
-    <div className="instrument-shell"><div className="instrument-selector" role="tablist" aria-label="Selecione um instrumento">{instruments.map((it,i)=><button key={it.id} role="tab" id={`inst-tab-${it.id}`} aria-controls="instrument-detail" aria-selected={selectedInstrument===it.id} className={selectedInstrument===it.id?'active':''} onClick={()=>setSelectedInstrument(it.id)}><span>{String(i+1).padStart(2,'0')}</span><strong>{it.name}</strong><ArrowRight size={17}/></button>)}</div>
+    <div className="instrument-shell"><div className="instrument-selector" role="tablist" aria-label="Selecione um instrumento">{instruments.map((it,i)=><button key={it.id} role="tab" id={`inst-tab-${it.id}`} aria-controls="instrument-detail" aria-selected={selectedInstrument===it.id} className={selectedInstrument===it.id?'active':''} onClick={()=>selectInstrument(it.id)}><span>{String(i+1).padStart(2,'0')}</span><strong>{it.name}</strong><ArrowRight size={17}/></button>)}</div>
       <div className="instrument-spotlight" id="instrument-detail" role="tabpanel" aria-labelledby={`inst-tab-${selectedInstrument}`}><div className="spotlight-header"><SmallLabel>COLEÇÃO SONORA / {selectedI.tag.toUpperCase()}</SmallLabel><span>ESTUDO ILUSTRADO</span></div><div className="instrument-illustration"><InstrumentArt type={selectedI.id}/></div><div className="spotlight-info"><div><h2>{selectedI.name}</h2><p>{selectedI.detail}</p><div className="spotlight-metadata"><div><span>COMO O SOM ACONTECE</span><strong>{selectedI.how}</strong></div><div><span>UMA CURIOSIDADE</span><strong>{selectedI.curiosity}</strong></div></div></div><button className="listen-pill" onClick={()=>playTrack(selectedI.track)}><span className="round-play small">{playing&&activeTrack===selectedI.track?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</span><span>{playing&&activeTrack===selectedI.track?'PAUSAR AMOSTRA':'OUVIR DEMONSTRAÇÃO'}</span><AudioLines size={22}/></button></div></div>
     </div><p className="museum-note"><Info size={17}/> As amostras são sínteses eletrônicas educativas, não registros de instrumentos reais. Para autenticidade timbrística, substitua pelos áudios autorizados.</p><div className="scene-bottom"><span>VOCÊ CONSEGUE RECONHECER UM SOM?</span><button className="button-primary" onClick={()=>navigate('quiz')}>TESTAR MEUS OUVIDOS <ArrowRight size={18}/></button></div></div></section>}
 
@@ -175,7 +307,7 @@ export default function App(){
   </main>
   {route.page!=='home'&&route.page!=='final'&&<div className="floating-journey"><span><i/> ETAPA {Math.max(1,progressMap[route.page])} DE 8</span><button onClick={reset} title="Parar os áudios e deixar pronto para outro visitante"><RotateCcw size={14}/> REINICIAR VISITA</button></div>}
   {activeTrack&&<aside className="mini-player" aria-label="Reprodutor de áudio"><div className="mini-player-art"><Disc3 size={28} className={playing?'spinning':''}/></div><div className="mini-meta"><strong>{currentTrack?.title}</strong><span>{currentTrack?.artist}</span></div>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(-1)} aria-label="Áudio anterior"><SkipBack size={19}/></button>}<button className="mini-control" onClick={()=>playTrack(activeTrack)} aria-label={playing?'Pausar áudio':'Reproduzir áudio'}>{playing?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</button>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(1)} aria-label="Próximo áudio"><SkipForward size={19}/></button>}<div className="mini-progress"><span>{duration(currentTime)}</span><input type="range" aria-label="Posição da reprodução" min="0" max={Math.max(1,audioLength)} step="0.1" value={Math.min(currentTime,Math.max(1,audioLength))} onChange={e=>{if(audioRef.current)audioRef.current.currentTime=Number(e.target.value)}}/><span>{duration(audioLength)}</span></div><Volume2 size={16} className="mini-volume-icon"/><input className="mini-volume" type="range" aria-label="Volume" min="0" max="1" step="0.05" value={volume} onChange={e=>{setVolume(Number(e.target.value));if(muted)setMuted(false)}}/><button className="mini-close" aria-label="Fechar player e parar áudio" onClick={stopAudio}><X size={19}/></button>{audioError&&<div className="audio-error" role="alert">Não foi possível carregar o áudio. Verifique o arquivo em public/audio.</div>}</aside>}
-  {selectedArtist&&<div className="modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedArtist(null)}}><div className="artist-modal" role="dialog" aria-modal="true" aria-labelledby="artist-modal-title"><button className="modal-close" autoFocus onClick={()=>setSelectedArtist(null)} aria-label="Fechar ficha de artista"><X size={21}/></button><div className="modal-art" style={{'--poster':selectedArtist.tone}}><div className="modal-art-ring"/>{selectedArtist.photo?<img className="modal-photo" src={asset(selectedArtist.photo)} alt={`Fotografia de ${selectedArtist.name}`}/>:<Mic2 size={64} strokeWidth={.9}/>}<span>ARQUIVO SONORO <b>{states.find(s=>s.id===selectedArtist.state)?.code}</b></span></div><div className="modal-content"><SmallLabel>FICHA DE ACERVO / {selectedArtist.era}</SmallLabel><h2 id="artist-modal-title">{selectedArtist.name}</h2><div className="modal-tags"><span>{selectedArtist.tag}</span><span>{states.find(s=>s.id===selectedArtist.state)?.title}</span></div><p>{selectedArtist.bio}</p><div className="modal-fact"><span>OBRA EM DESTAQUE</span><strong>{selectedArtist.work}</strong></div><div className="modal-fact"><span>VOCÊ SABIA?</span><strong>{selectedArtist.curiosity}</strong></div><div className="modal-buttons"><a href={selectedArtist.source} target="_blank" rel="noreferrer" className="button-primary">CONHECER A FONTE <ExternalLink size={17}/></a><button className="text-link" onClick={()=>{setSelectedArtist(null);navigate('state',selectedArtist.state)}}>VER TERRITÓRIO <ArrowRight size={17}/></button></div><p className="modal-ethics">Músicas comerciais não são reproduzidas sem licença. O módulo de escuta dos territórios contém somente estudos sonoros didáticos originais.</p></div></div></div>}
+  {selectedArtist&&<div className="modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedArtist(null)}}><div className="artist-modal" role="dialog" aria-modal="true" aria-labelledby="artist-modal-title"><button className="modal-close" autoFocus onClick={()=>setSelectedArtist(null)} aria-label="Fechar ficha de artista"><X size={21}/></button><div className="modal-art" style={{'--poster':selectedArtist.tone}}><div className="modal-art-ring"/>{selectedArtist.photo?<img className="modal-photo" src={asset(selectedArtist.photo)} alt={`Fotografia de ${selectedArtist.name}`}/>:<Mic2 size={64} strokeWidth={.9}/>}<span>ARQUIVO SONORO <b>{states.find(s=>s.id===selectedArtist.state)?.code}</b></span></div><div className="modal-content"><SmallLabel>FICHA DE ACERVO / {selectedArtist.era}</SmallLabel><h2 id="artist-modal-title">{selectedArtist.name}</h2><div className="modal-tags"><span>{selectedArtist.tag}</span><span>{states.find(s=>s.id===selectedArtist.state)?.title}</span></div><p>{selectedArtist.bio}</p><div className="modal-fact"><span>OBRA EM DESTAQUE</span><strong>{selectedArtist.work}</strong></div><div className="modal-fact"><span>VOCÊ SABIA?</span><strong>{selectedArtist.curiosity}</strong></div><ArtistListening artist={selectedArtist}/><div className="modal-buttons"><a href={selectedArtist.source} target="_blank" rel="noreferrer" className="button-primary">CONHECER A FONTE <ExternalLink size={17}/></a><button className="text-link" onClick={()=>{setSelectedArtist(null);navigate('state',selectedArtist.state)}}>VER TERRITÓRIO <ArrowRight size={17}/></button></div><p className="modal-ethics">As músicas dos artistas são incorporadas pelo Spotify. Os áudios dos territórios são estudos sonoros originais.</p></div></div></div>}
  </div>
 }
 function ArrowUpIcon(){return <MoveUpRight size={18} strokeWidth={1.7} aria-hidden="true"/>}
