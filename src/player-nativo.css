@@ -1,0 +1,78 @@
+/* ECOS_NATIVE_PLAYER_V1 — áudio HTML5 nativo, desktop e celular */
+.ecos-native-audio-dock {
+  display: none;
+  position: fixed;
+  z-index: 90;
+  inset: auto 0 0;
+  width: 100%;
+  padding: 11px max(18px, calc((100vw - 1220px)/2)) calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid #98714b;
+  background: #241a17;
+  color: #faecd8;
+  box-shadow: 0 -12px 45px #0007;
+  gap: 9px;
+  box-sizing: border-box;
+}
+.ecos-native-audio-dock.is-visible { display: flex; flex-direction: column; }
+.ecos-native-audio-top {
+  display: flex; flex-wrap: nowrap; align-items: center;
+  justify-content: space-between; min-width: 0; gap: 16px;
+}
+.ecos-native-audio-info {
+  display: flex; flex: 1 1 auto; min-width: 0; align-items: center; gap: 11px;
+}
+.ecos-native-audio-info > svg { flex: 0 0 auto; color: #dfa568; }
+.ecos-native-audio-text { display: flex; flex-direction: column; min-width: 0; }
+.ecos-native-audio-text strong {
+  display: block; font: 500 16px/1.2 var(--serif, Georgia, serif);
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ecos-native-audio-text span {
+  display: block; margin-top: 3px; font-size: 11px;
+  color: #cbb19a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.ecos-native-audio-buttons {
+  display: flex; flex: 0 0 auto; align-items: center; justify-content: flex-end;
+  gap: 5px;
+}
+.ecos-native-audio-buttons button,
+.ecos-native-audio-buttons a {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 38px; min-height: 38px; padding: 6px 9px;
+  text-decoration: none; color: #f5dfc1; border: 1px solid #ffffff30;
+  border-radius: 8px; background: #ffffff0d; font-weight: 700;
+}
+.ecos-native-audio-buttons button:hover,
+.ecos-native-audio-buttons a:hover { background: #ffffff20; }
+.ecos-native-audio-open { gap: 7px; font-size: 10px; letter-spacing: .06em; }
+.ecos-native-audio-dock > audio.ecos-native-audio {
+  display: block; width: 100%; min-width: 0; height: 44px;
+  border: 0; border-radius: 9px;
+  color-scheme: light;
+}
+.ecos-native-audio-error {
+  margin: 0; color: #ffc6a3; font-size: 12px; line-height: 1.5;
+}
+/* O progresso da visita não deve ficar por cima do player. */
+.ecos-native-audio-dock.is-visible ~ .floating-journey { display: none; }
+.app-shell:has(.ecos-native-audio-dock.is-visible) { padding-bottom: 135px; }
+@media (max-width: 650px) {
+  .ecos-native-audio-dock {
+    padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)); gap: 10px;
+  }
+  .ecos-native-audio-top { gap: 8px; }
+  .ecos-native-audio-info { gap: 7px; }
+  .ecos-native-audio-info > svg { width: 20px; height: 20px; }
+  .ecos-native-audio-text strong { font-size: 14px; }
+  .ecos-native-audio-text span { font-size: 10px; }
+  .ecos-native-audio-buttons { gap: 3px; }
+  .ecos-native-audio-buttons button,
+  .ecos-native-audio-buttons a { min-width: 36px; min-height: 40px; padding: 7px; }
+  .ecos-native-audio-open span { display: none; }
+  .ecos-native-audio-dock > audio.ecos-native-audio { height: 42px; }
+  .app-shell:has(.ecos-native-audio-dock.is-visible) { padding-bottom: 135px; }
+}
+@media (max-width: 350px) {
+  .ecos-native-audio-text strong { font-size: 12px; }
+  .ecos-native-audio-info > svg { display: none; }
+}

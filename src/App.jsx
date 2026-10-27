@@ -204,6 +204,32 @@ const navigate=(page,id)=>{
    onEnded={()=>setPlaying(false)}
    onError={()=>{ if(activeTrack) { setAudioError(true); setPlaying(false); } }}
   />
+  {/* ECOS_COMPACT_PLAYER_V2 — barra de escuta do museu */}
+  {activeTrack && <aside className="ecos-compact-player" aria-label="Reprodutor de áudio do museu">
+    <div className="ecos-compact-cover"><Disc3 size={23} aria-hidden="true" className={playing ? 'spinning' : ''}/></div>
+    <div className="ecos-compact-meta">
+      <strong title={currentTrack?.title || ''}>{currentTrack?.title || 'Áudio do museu'}</strong>
+      <span title={currentTrack?.artist || ''}>{currentTrack?.artist || 'ECOS DO CENTRO-OESTE'}</span>
+    </div>
+    <div className="ecos-compact-transport">
+      {inPlaylist && <button type="button" className="ecos-compact-icon" onClick={()=>changeTrack(-1)} aria-label="Faixa anterior" title="Anterior"><SkipBack size={17}/></button>}
+      <button type="button" className="ecos-compact-play" onClick={()=>playTrack(activeTrack)} aria-label={playing ? 'Pausar áudio' : 'Reproduzir áudio'} title={playing ? 'Pausar' : 'Reproduzir'}>
+        {playing ? <Pause size={20} fill="currentColor"/> : <Play size={20} fill="currentColor"/>}
+      </button>
+      {inPlaylist && <button type="button" className="ecos-compact-icon" onClick={()=>changeTrack(1)} aria-label="Próxima faixa" title="Próxima"><SkipForward size={17}/></button>}
+    </div>
+    <div className="ecos-compact-seek">
+      <input className="ecos-compact-progress" type="range" aria-label="Avançar ou voltar no áudio" min="0" max={Math.max(1,audioLength)} step="0.1" value={Math.min(currentTime,Math.max(1,audioLength))} style={{'--fill':`${Math.min(100,Math.max(0,(currentTime/Math.max(1,audioLength))*100))}%`}} onChange={e=>{if(audioRef.current)audioRef.current.currentTime=Number(e.target.value)}}/>
+      <span className="ecos-compact-clock">{duration(currentTime)} / {duration(audioLength)}</span>
+    </div>
+    <div className="ecos-compact-tools">
+      <button type="button" className="ecos-compact-icon" aria-label={muted ? 'Ativar som' : 'Silenciar'} onClick={()=>setMuted(!muted)} title={muted ? 'Ativar som' : 'Silenciar'}>{muted ? <VolumeX size={18}/> : <Volume2 size={18}/>}</button>
+      <input className="ecos-compact-volume" type="range" aria-label="Volume do áudio" min="0" max="1" step="0.05" value={volume} onChange={e=>{setVolume(Number(e.target.value));if(muted)setMuted(false)}}/>
+      {currentTrack?.url && <a className="ecos-compact-external" onClick={()=>audioRef.current?.pause()} href={asset(currentTrack.url)} target="_blank" rel="noopener noreferrer" title="Ouvir diretamente no navegador" aria-label="Abrir áudio em nova aba"><ExternalLink size={17}/></a>}
+      <button type="button" className="ecos-compact-icon" onClick={stopAudio} aria-label="Fechar player" title="Fechar"><X size={19}/></button>
+    </div>
+    {audioError && <p className="ecos-compact-error" role="alert">Erro ao carregar o áudio. Confira public/audio.</p>}
+  </aside>}
   <header className={`site-header ${route.page==='home'?'home-header':''}`}>
     <div className="header-container"><Brand onClick={()=>navigate('home')} />
     <nav className="desktop-nav" aria-label="Navegação principal">
@@ -306,7 +332,7 @@ const navigate=(page,id)=>{
    </section>}
   </main>
   {route.page!=='home'&&route.page!=='final'&&<div className="floating-journey"><span><i/> ETAPA {Math.max(1,progressMap[route.page])} DE 8</span><button onClick={reset} title="Parar os áudios e deixar pronto para outro visitante"><RotateCcw size={14}/> REINICIAR VISITA</button></div>}
-  {activeTrack&&<aside className="mini-player" aria-label="Reprodutor de áudio"><div className="mini-player-art"><Disc3 size={28} className={playing?'spinning':''}/></div><div className="mini-meta"><strong>{currentTrack?.title}</strong><span>{currentTrack?.artist}</span></div>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(-1)} aria-label="Áudio anterior"><SkipBack size={19}/></button>}<button className="mini-control" onClick={()=>playTrack(activeTrack)} aria-label={playing?'Pausar áudio':'Reproduzir áudio'}>{playing?<Pause size={18} fill="currentColor"/>:<Play size={18} fill="currentColor"/>}</button>{inPlaylist&&<button className="mini-skip" onClick={()=>changeTrack(1)} aria-label="Próximo áudio"><SkipForward size={19}/></button>}<div className="mini-progress"><span>{duration(currentTime)}</span><input type="range" aria-label="Posição da reprodução" min="0" max={Math.max(1,audioLength)} step="0.1" value={Math.min(currentTime,Math.max(1,audioLength))} onChange={e=>{if(audioRef.current)audioRef.current.currentTime=Number(e.target.value)}}/><span>{duration(audioLength)}</span></div><Volume2 size={16} className="mini-volume-icon"/><input className="mini-volume" type="range" aria-label="Volume" min="0" max="1" step="0.05" value={volume} onChange={e=>{setVolume(Number(e.target.value));if(muted)setMuted(false)}}/><button className="mini-close" aria-label="Fechar player e parar áudio" onClick={stopAudio}><X size={19}/></button>{audioError&&<div className="audio-error" role="alert">Não foi possível carregar o áudio. Verifique o arquivo em public/audio.</div>}</aside>}
+  
   {selectedArtist&&<div className="modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setSelectedArtist(null)}}><div className="artist-modal" role="dialog" aria-modal="true" aria-labelledby="artist-modal-title"><button className="modal-close" autoFocus onClick={()=>setSelectedArtist(null)} aria-label="Fechar ficha de artista"><X size={21}/></button><div className="modal-art" style={{'--poster':selectedArtist.tone}}><div className="modal-art-ring"/>{selectedArtist.photo?<img className="modal-photo" src={asset(selectedArtist.photo)} alt={`Fotografia de ${selectedArtist.name}`}/>:<Mic2 size={64} strokeWidth={.9}/>}<span>ARQUIVO SONORO <b>{states.find(s=>s.id===selectedArtist.state)?.code}</b></span></div><div className="modal-content"><SmallLabel>FICHA DE ACERVO / {selectedArtist.era}</SmallLabel><h2 id="artist-modal-title">{selectedArtist.name}</h2><div className="modal-tags"><span>{selectedArtist.tag}</span><span>{states.find(s=>s.id===selectedArtist.state)?.title}</span></div><p>{selectedArtist.bio}</p><div className="modal-fact"><span>OBRA EM DESTAQUE</span><strong>{selectedArtist.work}</strong></div><div className="modal-fact"><span>VOCÊ SABIA?</span><strong>{selectedArtist.curiosity}</strong></div><ArtistListening artist={selectedArtist}/><div className="modal-buttons"><a href={selectedArtist.source} target="_blank" rel="noreferrer" className="button-primary">CONHECER A FONTE <ExternalLink size={17}/></a><button className="text-link" onClick={()=>{setSelectedArtist(null);navigate('state',selectedArtist.state)}}>VER TERRITÓRIO <ArrowRight size={17}/></button></div><p className="modal-ethics">As músicas dos artistas são incorporadas pelo Spotify. Os áudios dos territórios são estudos sonoros originais.</p></div></div></div>}
  </div>
 }
