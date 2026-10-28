@@ -1,0 +1,105 @@
+/* ECOS_EXPERIENCIAS_V1 — transições, acervo, desafio e passaporte.
+   Adicionado depois dos estilos existentes; não substitui estilos autorais. */
+/* 1. Transições entre territórios */
+.state-hero { animation: ecos-state-appear .7s ease both; }
+.state-hero .state-hero-image { animation: ecos-landscape-reveal 1.4s cubic-bezier(.2,.72,.2,1) both; transform-origin:center; }
+.map-area { transition: filter .3s ease, stroke .3s ease, opacity .3s ease; }
+@keyframes ecos-state-appear { from {opacity:.65} to {opacity:1} }
+@keyframes ecos-landscape-reveal { from { transform:scale(1.07); filter:saturate(.68)} to {transform:scale(1);filter:saturate(1)} }
+.ecos-transition-curtain {position:fixed;inset:0;z-index:205;display:grid;place-items:center;pointer-events:none;overflow:hidden;background:#1b1d18;color:#f4e4c7;animation:ecos-curtain-life .83s cubic-bezier(.2,.6,.3,1) both;}
+.ecos-curtain-raster{position:absolute;inset:0;background:radial-gradient(circle at 68% 42%,#a2683c53,transparent 55%),repeating-linear-gradient(0deg,#ffffff06 0 1px,transparent 1px 5px);opacity:.65}
+.ecos-curtain-content{position:relative;text-align:center;max-width:min(92vw,670px);padding:30px;}
+.ecos-curtain-hairline,.ecos-curtain-rule{width:110px;height:1px;background:#d5a064;margin:0 auto 26px;}
+.ecos-curtain-rule{margin:26px auto 0;}
+.ecos-curtain-content>span{color:#dbad78;font-size:11px;letter-spacing:.19em;font-weight:700;}
+.ecos-curtain-content h2{font:500 clamp(48px,9vw,115px)/.95 var(--serif,Georgia,serif);letter-spacing:-.065em;margin:19px 0;}
+.ecos-curtain-content p{font-size:clamp(12px,1.5vw,17px);color:#cfbfac;max-width:450px;line-height:1.5;margin:0 auto;}
+@keyframes ecos-curtain-life{0%{clip-path:inset(100% 0 0 0);opacity:1}36%{clip-path:inset(0 0 0 0);opacity:1}78%{clip-path:inset(0 0 0 0);opacity:1}100%{clip-path:inset(0 0 100% 0);opacity:0}}
+/* 2. Instrumentos: alternar foto real e ilustração */
+.ecos-instrument-showcase{position:relative;min-width:0;width:100%;}
+.ecos-visual-tabs{display:flex;gap:4px;padding:15px 34px 0;align-items:center;justify-content:center;}
+.ecos-visual-tabs button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:34px;padding:6px 13px;border:1px solid #bca785;color:#71513a;background:transparent;border-radius:99px;font:700 10px/1.2 'DM Sans',sans-serif;letter-spacing:.04em;cursor:pointer;}
+.ecos-visual-tabs button.selected{background:#483025;color:#f5dfbd;border-color:#483025;}
+.ecos-instrument-showcase .instrument-illustration{height:300px;min-height:200px;overflow:hidden;background:radial-gradient(ellipse at center,#f2dba9,#f1e5d0 62%);}
+.ecos-instrument-showcase .instrument-svg{max-height:100%;}
+.ecos-instrument-photo{width:min(100%,640px);height:100%;max-height:300px;object-fit:contain;display:block;margin:auto;padding:10px 28px;mix-blend-mode:multiply;}
+.ecos-instrument-note{display:flex;gap:22px;align-items:flex-start;justify-content:space-between;padding:10px 36px 16px;color:#7f6247;border-bottom:1px solid #d7c9b4;}
+.ecos-instrument-note strong{display:block;color:#b06b3b;font-size:9px;letter-spacing:.15em;margin-bottom:5px;}
+.ecos-instrument-note p{margin:0;font-size:12px;line-height:1.5;max-width:650px;}
+.ecos-archive-link{display:inline-flex;align-items:center;gap:5px;flex-shrink:0;text-align:right;color:#845632;font-size:10px;max-width:250px;line-height:1.4;text-decoration:underline;text-underline-offset:3px;}
+/* 3. Retratos de acervo */
+.poster-photo,.modal-photo{object-fit:cover;}
+.ecos-photo-attribution{display:flex;align-items:flex-start;flex-wrap:wrap;gap:7px;color:#7c6b59;font-size:11px;line-height:1.5;padding:13px 0;border-top:1px solid #dac7aa;}
+.ecos-photo-attribution>span{flex:1 1 210px;}
+.ecos-photo-attribution a{display:inline-flex;align-items:center;gap:4px;color:#8f532e;text-decoration:underline;text-underline-offset:3px;}
+/* 4. Quiz */
+.ecos-quiz-help{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap;margin:20px 0;padding:13px 15px;border:1px solid #b592664d;background:#f7e8d913;color:#f2dbc0;}
+.ecos-quiz-help>div:first-child{display:flex;align-items:center;gap:11px;}
+.ecos-quiz-help strong{font-size:12px;letter-spacing:.06em;}
+.ecos-quiz-help small{display:block;font-size:10px;color:#d4bda1;line-height:1.5;margin-top:3px;}
+.ecos-quiz-counter{display:flex;align-items:center;gap:7px;border:1px solid #bd8e58a1;border-radius:99px;padding:6px 10px;}
+.ecos-quiz-counter>span{font-size:10px;}
+.ecos-quiz-tip{display:flex;align-items:flex-start;gap:6px;flex-basis:100%;font-size:10px;line-height:1.5;color:#cdbba7;border-top:1px solid #ffffff1a;padding-top:10px;}
+.ecos-quiz-tip svg{flex-shrink:0;}
+.ecos-quiz-finish{display:flex;align-items:center;gap:12px;margin:19px 0;padding:15px;border:1px solid #cda272;background:#d6a56b26;color:#f0d9bb;}
+.ecos-quiz-finish strong,.ecos-quiz-finish span{display:block;}
+.ecos-quiz-finish strong{font-size:12px;letter-spacing:.12em;}
+.ecos-quiz-finish span{font-size:11px;line-height:1.5;margin-top:4px;}
+/* 5. Passaporte: marcador discreto e modal editorial */
+.ecos-passport-launch{position:fixed;left:18px;bottom:24px;z-index:52;display:flex;align-items:center;gap:9px;background:#40271e;color:#f4dfc5;border:1px solid #c48c53;border-radius:99px;padding:11px 15px;box-shadow:0 8px 25px #1e130a45;font-size:10px;font-weight:800;letter-spacing:.06em;cursor:pointer;}
+.ecos-passport-launch b{display:grid;place-items:center;min-width:36px;min-height:28px;padding:0 5px;color:#3c2419;background:#e5ae6e;border-radius:99px;font-size:11px;}
+.app-shell:has(.ecos-compact-player) .ecos-passport-launch,.app-shell:has(.ecos-native-audio-dock.is-visible) .ecos-passport-launch,.app-shell:has(.mini-player) .ecos-passport-launch{bottom:106px;}
+.ecos-passport-backdrop{position:fixed;inset:0;z-index:250;display:grid;place-items:center;padding:16px;background:#1f1715cf;backdrop-filter:blur(6px);overflow-y:auto;}
+.ecos-passport-modal{position:relative;width:min(760px,100%);max-height:calc(100svh - 32px);overflow:auto;background:#f5e8d4;color:#442b20;border:1px solid #a67c54;box-shadow:0 25px 100px #0006;padding:clamp(20px,4vw,42px);}
+.ecos-passport-close{position:absolute;top:14px;right:14px;width:38px;height:38px;border:1px solid #cdb392;background:transparent;color:#55392b;display:grid;place-items:center;cursor:pointer;}
+.ecos-passport-heading{max-width:590px;}
+.ecos-passport-overline{font-size:9px;letter-spacing:.18em;color:#a7663b;font-weight:800;}
+.ecos-passport-heading>svg{display:block;margin:20px 0 14px;color:#a36940;}
+.ecos-passport-heading h2{font:500 clamp(38px,5.8vw,64px)/.95 var(--serif,Georgia,serif);letter-spacing:-.05em;margin:0;}
+.ecos-passport-heading h2 em{color:#a66b42;}
+.ecos-passport-heading p{font-size:13px;color:#78624f;line-height:1.6;max-width:450px;margin:17px 0 25px;}
+.ecos-passport-stamps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;}
+.ecos-stamp{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-width:0;min-height:175px;padding:13px 8px;background:#efe0c8;color:#92785e;border:1px dashed #bba083;cursor:pointer;}
+.ecos-stamp.stamped{background:#dde0cc;color:#526343;border:2px solid #889773;}
+.ecos-stamp-number{position:absolute;top:10px;left:11px;font-size:10px;}
+.ecos-stamp>strong{font:500 44px/1 var(--serif,Georgia,serif);}
+.ecos-stamp small{font-size:11px;line-height:1.3;text-align:center;min-height:27px;color:#745943;}
+.ecos-stamp-status{display:flex;align-items:center;gap:5px;font-size:9px;letter-spacing:.07em;font-weight:800;}
+.ecos-passport-progress{margin:24px 0 16px;}
+.ecos-passport-progress>div:first-child{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;color:#8f5a38;font-size:10px;font-weight:800;letter-spacing:.06em;}
+.ecos-passport-meter{height:6px;background:#dac3a5;overflow:hidden;border-radius:10px;}
+.ecos-passport-meter span{display:block;background:#798863;height:100%;transition:width .35s ease;}
+.ecos-passport-completion{display:flex;align-items:center;gap:9px;color:#705943;font-size:12px;line-height:1.5;margin:0;}
+.ecos-passport-completion svg{flex-shrink:0;}
+.ecos-passport-foot{display:block;margin-top:24px;padding-top:13px;border-top:1px solid #dcc7ae;font-size:10px;color:#967c66;}
+.ecos-passport-launch:focus-visible,.ecos-passport-modal button:focus-visible,.ecos-visual-tabs button:focus-visible{outline:3px solid #e5ad69;outline-offset:3px;}
+@media(max-width:900px){
+  .ecos-instrument-note{flex-direction:column;gap:10px;}
+  .ecos-passport-launch{left:12px;bottom:64px;}
+  .app-shell:has(.ecos-compact-player) .ecos-passport-launch,.app-shell:has(.ecos-native-audio-dock.is-visible) .ecos-passport-launch,.app-shell:has(.mini-player) .ecos-passport-launch{bottom:125px;}
+}
+@media(max-width:650px){
+  .ecos-instrument-showcase .instrument-illustration{height:230px;}
+  .ecos-instrument-photo{max-height:230px;}
+  .ecos-visual-tabs{padding:10px 10px 0;justify-content:center;}
+  .ecos-instrument-note{padding:12px 18px 16px;}
+  .ecos-archive-link{max-width:100%;text-align:left;}
+  .ecos-passport-launch{font-size:9px;padding:8px 10px;gap:5px;bottom:54px;}
+  .ecos-passport-launch>span{max-width:118px;white-space:nowrap;}
+  .ecos-passport-launch b{min-width:32px;min-height:24px;}
+  .ecos-passport-backdrop{padding:10px;}
+  .ecos-passport-modal{padding:22px 14px;}
+  .ecos-passport-close{top:8px;right:8px;}
+  .ecos-passport-overline{display:block;max-width:220px;line-height:1.6;}
+  .ecos-passport-stamps{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .ecos-stamp{min-height:128px;gap:5px;}
+  .ecos-stamp>strong{font-size:37px;}
+  .ecos-stamp small{min-height:auto;}
+  .ecos-quiz-help{margin:14px 0;}
+  .ecos-quiz-counter{padding:5px 8px;}
+}
+@media (prefers-reduced-motion:reduce){
+ .state-hero,.state-hero .state-hero-image,.ecos-transition-curtain{animation:none!important;}
+ .ecos-passport-meter span{transition:none;}
+}
+.reduced-motion .state-hero,.reduced-motion .state-hero .state-hero-image,.reduced-motion .ecos-transition-curtain{animation:none!important;}
