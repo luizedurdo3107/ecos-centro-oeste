@@ -1,0 +1,237 @@
+/* ECOS_MOBILE_SITE_INTEIRO_V1
+   Correção consolidada e isolada da responsividade. Deve ser importado DEPOIS
+   de styles.css, features/ecos-experiencias.css e player-compacto.css.
+   Não muda a versão desktop nem os arquivos de áudio. */
+
+:root { --ecos-mobile-ink: #43271d; --ecos-mobile-link: #98502d; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+/* Safari/iOS pode pintar texto de <button> com azul de sistema quando falta color. */
+.app-shell button { -webkit-tap-highlight-color: transparent; }
+.app-shell button.text-link,
+.app-shell .paper-scene button.text-link,
+.app-shell .station-next button.text-link,
+.app-shell .home-after button.text-link,
+.app-shell .state-artists .state-artist-card,
+.app-shell .state-artists .state-artist-card strong,
+.app-shell .state-artists .state-artist-card > svg,
+.app-shell .artist-tile,
+.app-shell .artist-tile-foot strong,
+.app-shell .artist-tile-foot .arrow-round {
+  color: var(--ecos-mobile-link);
+  -webkit-text-fill-color: currentColor;
+}
+.app-shell .state-artists .state-artist-card,
+.app-shell .state-artists .state-artist-card strong,
+.app-shell .artist-tile-foot strong { color: var(--ecos-mobile-ink); }
+.app-shell .state-artists .state-artist-card > svg,
+.app-shell .state-artists .state-artist-card .arrow-round { color: var(--ecos-mobile-link); }
+/* Crie cor de texto explícita nos controles — sem alterar botões dourados/escuros. */
+.app-shell .state-artist-card,
+.app-shell .station-next .text-link,
+.app-shell .text-link,
+.app-shell .quiet-link,
+.app-shell .intro-regions button,
+.app-shell .state-artists button { appearance: none; -webkit-appearance: none; }
+
+@media (max-width: 900px) {
+  .app-shell .container,
+  .app-shell .header-container { width: calc(100% - 40px); max-width: 100%; }
+  .app-shell .state-heading,
+  .app-shell .state-people,
+  .app-shell .state-artists,
+  .app-shell .facts-grid,
+  .app-shell .station-next,
+  .app-shell .map-layout,
+  .app-shell .intro-grid,
+  .app-shell .home-after-grid,
+  .app-shell .quiz-layout,
+  .app-shell .timeline-detail,
+  .app-shell .instrument-shell { min-width: 0; }
+  .app-shell .button-primary,
+  .app-shell .button-outline { max-width: 100%; white-space: normal; text-align: center; line-height: 1.35; }
+  .app-shell .scene-bottom { gap: 16px; }
+  .app-shell .ecos-passport-backdrop { max-height: 100dvh; }
+}
+
+@media (max-width: 650px) {
+  .app-shell { min-width: 0; }
+  .app-shell main,
+  .app-shell main > section { min-width: 0; }
+  .app-shell .container,
+  .app-shell .header-container { width: calc(100% - 36px); }
+  .app-shell h1,
+  .app-shell h2,
+  .app-shell h3 { max-width: 100%; text-wrap: balance; }
+  /* Não quebrar palavras no meio de nomes, listas e botões */
+  .app-shell p,
+  .app-shell blockquote,
+  .app-shell .state-artist-card strong,
+  .app-shell button,
+  .app-shell .artist-tile-foot strong { overflow-wrap: break-word; word-break: normal; hyphens: none; }
+
+  /* 1 — INÍCIO E INTRODUÇÃO */
+  .app-shell .hero { min-height: 630px; height: max(630px, 100svh); }
+  .app-shell .hero-content { padding-top: clamp(95px, 16svh, 135px); }
+  .app-shell .hero-copy { min-width: 0; }
+  .app-shell .hero-copy h1 { font-size: clamp(42px, 11.3vw, 57px); line-height: .97; letter-spacing: -.055em; overflow-wrap: anywhere; }
+  .app-shell .hero-quote { font-size: clamp(19px, 5.4vw, 24px); line-height: 1.2; }
+  .app-shell .hero-copy > p { font-size: 14px; line-height: 1.6; }
+  .app-shell .hero-copy .button-primary { width: auto; min-height: 54px; padding: 11px 16px; font-size: 11px; gap: 12px; }
+  .app-shell .headphone-note { line-height: 1.45; }
+  .app-shell .hero-bottom { bottom: max(15px, env(safe-area-inset-bottom)); font-size: 8px; gap: 12px; }
+  .app-shell .home-after { padding-top: 48px; padding-bottom: 58px; }
+  .app-shell .home-after-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .app-shell .home-after-grid > h2 { font-size: clamp(31px, 8.5vw, 40px); line-height: 1.13; letter-spacing: -.045em; margin: 12px 0 0; overflow-wrap: normal; }
+  .app-shell .home-after-grid > div { min-width: 0; }
+  .app-shell .home-after-grid > div p { font-size: 15px; line-height: 1.6; max-width: 39ch; margin: 0 0 12px; }
+  .app-shell .home-after .text-link { color: var(--ecos-mobile-link); font-size: 11px; gap: 10px; line-height: 1.4; }
+  .app-shell .intro-copy .display-title { font-size: clamp(32px, 8.8vw, 43px); line-height: 1.08; }
+  .app-shell .intro-copy > p { font-size: 14px; line-height: 1.65; }
+  .app-shell .intro-regions { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .app-shell .intro-regions button { min-width: 0; font-size: 12px; gap: 7px; }
+  .app-shell .narration-box { display:flex; align-items:center; min-width:0; }
+  .app-shell .narration-box > div:nth-child(2) { flex: 1; min-width: 0; }
+  .app-shell .narration-box .round-play { flex-shrink: 0; }
+
+  /* 2 — MAPA E TERRITÓRIOS */
+  .app-shell .map-layout { display: flex; flex-direction: column; gap: 25px; }
+  .app-shell .map-info .display-title { font-size: clamp(35px, 9vw, 46px); line-height: 1.07; }
+  .app-shell .map-info > p { font-size: 14px; line-height: 1.6; }
+  .app-shell .map-visual { display: flex; flex-direction: column; gap: 15px; width: 100%; min-height:0; padding-bottom:0; }
+  .app-shell .map-compass { position: static; margin: 0 0 10px; }
+  .app-shell .region-map { width: min(100%, 340px); max-width: 340px; height: auto; max-height:none; margin:0 auto; }
+  .app-shell .map-card { position: static; inset:auto; display:flex; flex-direction:column; width:100%; min-height:0; margin:0; }
+  .app-shell .map-card > img { width:100%; height:170px; object-fit:cover; }
+  .app-shell .map-card-text { padding:20px; min-width:0; }
+  .app-shell .map-card h2 { font-size: clamp(25px, 7vw, 32px); line-height:1.08; }
+  .app-shell .map-card p { font-size:14px; line-height:1.55; }
+  .app-shell .state-hero .display-title { font-size:clamp(34px, 8.7vw, 47px); line-height:1.04; letter-spacing:-.05em; overflow-wrap:normal; }
+  .app-shell .state-hero-inner > p { font-size:17px; line-height:1.45; }
+  .app-shell .state-heading { gap: 18px; margin-bottom: 28px; }
+  .app-shell .state-heading h2 { font-size:clamp(31px, 8vw, 40px); line-height:1.12; }
+  .app-shell .state-heading > p { font-size:14px; line-height:1.62; }
+  .app-shell .genre-card h3 { font-size:clamp(26px, 7.3vw, 31px); line-height:1.12; }
+  .app-shell .station-track-line > div { min-width:0; }
+  .app-shell .station-track-line strong { overflow-wrap:break-word; }
+  .app-shell .facts-grid { gap: 26px; }
+  .app-shell .facts-grid blockquote { font-size:clamp(24px, 6.6vw, 29px); line-height:1.3; }
+  .app-shell .local-history { display:grid; grid-template-columns:minmax(68px, .26fr) minmax(0,1fr); gap:12px; align-items:start; padding:18px 0; }
+  .app-shell .local-history strong { min-width:0; font-size:22px; }
+  .app-shell .local-history span { font-size:13px; line-height:1.55; }
+  .app-shell .state-people { display:grid; grid-template-columns:minmax(0,1fr); gap:19px; margin-top:50px; padding-top:32px; }
+  .app-shell .state-people h2 { font-size:clamp(30px, 8.3vw, 38px); line-height:1.14; margin:12px 0 0; }
+  .app-shell .state-artists { min-width:0; width:100%; }
+  .app-shell .state-artist-card { display:flex; width:100%; min-width:0; gap:12px; padding:17px 0; text-align:left; color:var(--ecos-mobile-ink); }
+  .app-shell .state-artist-card > span:nth-child(2) { flex:1 1 auto; min-width:0; }
+  .app-shell .state-artist-card strong { font:500 clamp(18px, 5.1vw, 22px)/1.25 var(--serif, Georgia, serif); color:var(--ecos-mobile-ink); -webkit-text-fill-color:currentColor; }
+  .app-shell .state-artist-card small { color:#826b59; font-size:12px; line-height:1.4; }
+  .app-shell .state-artist-card > svg { flex:0 0 auto; color:var(--ecos-mobile-link); }
+  .app-shell .artist-circle { width:48px; height:48px; flex-shrink:0; }
+  .app-shell .station-next { gap:19px; padding-top:23px; margin-top:44px; margin-bottom:32px; }
+  .app-shell .station-next > .text-link { color:var(--ecos-mobile-link); font-size:10px; line-height:1.4; letter-spacing:.05em; }
+  .app-shell .station-next > .button-primary { min-height:54px; width:100%; display:flex; justify-content:center; font-size:11px; padding:12px 16px; }
+
+  /* 3 — LINHA DO TEMPO E GALERIA */
+  .app-shell .section-intro { padding-bottom:28px; }
+  .app-shell .section-intro h1 { font-size:clamp(34px, 8.9vw, 45px); line-height:1.08; margin:17px 0 16px; }
+  .app-shell .section-intro > p { font-size:14px; line-height:1.65; }
+  .app-shell .section-overline { flex-wrap:wrap; row-gap:7px; }
+  .app-shell .eyebrow { font-size:10px; letter-spacing:.13em; line-height:1.5; }
+  .app-shell .timeline-scene, .app-shell .artists-scene, .app-shell .instruments-scene { padding:48px 0 74px; }
+  .app-shell .timeline-track { width:100%; max-width:100%; overflow-x:auto; }
+  .app-shell .timeline-story { min-width:0; padding:22px 19px; }
+  .app-shell .timeline-story h2 { font-size:clamp(26px, 7vw, 32px); line-height:1.15; }
+  .app-shell .timeline-story > p { font-size:14px; line-height:1.6; }
+  .app-shell .time-big { font-size:clamp(43px, 11vw, 55px); }
+  .app-shell .artist-filters { max-width:100%; overflow-x:auto; flex-wrap:nowrap; padding-bottom:7px; }
+  .app-shell .artist-filters button { flex-shrink:0; }
+  .app-shell .artists-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:19px 12px; }
+  .app-shell .artist-tile { min-width:0; }
+  .app-shell .artist-poster { height:clamp(185px, 54vw, 250px); }
+  .app-shell .poster-name { font-size:clamp(18px, 5vw, 23px); line-height:1.12; }
+  .app-shell .artist-tile-foot > div { min-width:0; }
+  .app-shell .artist-tile-foot strong { font-size:14px; line-height:1.3; color:var(--ecos-mobile-ink); }
+  .app-shell .artist-tile-foot > div span { line-height:1.35; }
+  .app-shell .artist-modal { width:100%; max-height:calc(100dvh - 22px); }
+  .app-shell .modal-content { min-width:0; padding:23px 19px; }
+  .app-shell .modal-content h2 { font-size:clamp(30px, 8vw, 38px); line-height:1.08; }
+  .app-shell .artist-listening { width:100%; min-width:0; }
+  .app-shell .artist-listening iframe { max-width:100%; }
+  .app-shell .modal-buttons .button-primary { width:100%; }
+
+  /* 4 — INSTRUMENTOS E QUIZ */
+  .app-shell .instruments-scene .instrument-shell { display:flex; flex-direction:column; min-height:0; }
+  .app-shell .instruments-scene .instrument-selector { width:100%; min-width:0; display:flex; flex-flow:row nowrap; overflow-x:auto; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; }
+  .app-shell .instruments-scene .instrument-selector button { flex:0 0 148px; display:flex; flex-direction:row; align-items:center; min-height:66px; gap:8px; min-width:0; padding:12px; }
+  .app-shell .instruments-scene .instrument-selector button > strong { font-size:14px; line-height:1.25; }
+  .app-shell .instrument-spotlight { min-width:0; }
+  .app-shell .instrument-spotlight .spotlight-header { flex-wrap:wrap; }
+  .app-shell .instrument-spotlight .spotlight-info { min-width:0; padding:12px 18px 25px; }
+  .app-shell .spotlight-info h2 { font-size:clamp(29px, 7.8vw, 37px); line-height:1.1; }
+  .app-shell .spotlight-info p { font-size:14px; line-height:1.6; }
+  .app-shell .spotlight-metadata { grid-template-columns:1fr; gap:15px; }
+  .app-shell .listen-pill { min-width:0; max-width:100%; width:100%; gap:8px; }
+  .app-shell .listen-pill > span:nth-child(2) { white-space:normal; }
+  .app-shell .ecos-visual-tabs { flex-wrap:wrap; }
+  .app-shell .ecos-instrument-photo { max-width:100%; }
+  .app-shell .quiz-intro .display-title { font-size:clamp(34px, 9vw, 45px); line-height:1.07; }
+  .app-shell .quiz-panel { min-height:0; padding:25px 18px; }
+  .app-shell .quiz-panel h2 { font-size:clamp(25px, 6.9vw, 31px); line-height:1.16; }
+  .app-shell .quiz-options button { font-size:14px; min-height:54px; }
+  .app-shell .quiz-record { min-width:0; }
+  .app-shell .quiz-record > div { min-width:0; overflow:hidden; }
+  .app-shell .quiz-top { gap:9px; flex-wrap:wrap; }
+
+  /* 5 — ENCERRAMENTO / NAVEGAÇÃO */
+  .app-shell .end-inner .display-title { font-size:clamp(34px, 9vw, 44px); line-height:1.07; }
+  .app-shell .end-inner > p { font-size:15px; line-height:1.65; }
+  .app-shell .end-buttons .button-primary, .app-shell .end-buttons .button-outline { width:100%; }
+  .app-shell .scene-bottom { margin-top:42px; align-items:stretch; flex-direction:column; }
+  .app-shell .scene-bottom > .button-primary { width:100%; padding:12px 16px; }
+  .app-shell .floating-journey { display:none; } /* reiniciar visita segue no menu */
+
+  /* PASSAPORTE SONORO: compacto, sem cobrir texto e CTAs como no print. */
+  .app-shell .ecos-passport-launch {
+    position:fixed; left:12px; right:auto;
+    bottom:calc(10px + env(safe-area-inset-bottom, 0px));
+    width:52px; height:52px; min-width:52px;
+    padding:0; gap:0; justify-content:center;
+    border-radius:16px; font-size:11px; z-index:52;
+  }
+  .app-shell .ecos-passport-launch > span {
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; white-space:nowrap; clip:rect(0,0,0,0); clip-path:inset(50%); border:0;
+  }
+  .app-shell .ecos-passport-launch > svg { width:23px; height:23px; flex-shrink:0; }
+  .app-shell .ecos-passport-launch b {
+    position:absolute; top:-7px; right:-9px; min-width:28px; min-height:25px;
+    padding:0 4px; border-radius:14px; font-size:10px;
+  }
+  .app-shell:has(.ecos-compact-player) .ecos-passport-launch,
+  .app-shell:has(.ecos-native-audio-dock.is-visible) .ecos-passport-launch,
+  .app-shell:has(.mini-player) .ecos-passport-launch {
+    bottom:calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+  .app-shell .ecos-passport-modal { width:100%; max-height:calc(100dvh - 22px); }
+  .app-shell .ecos-passport-stamps { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .app-shell .ecos-stamp { min-width:0; }
+  .app-shell .ecos-passport-heading h2 { font-size:clamp(32px, 8vw, 42px); line-height:1.08; }
+  .app-shell .ecos-passport-backdrop { padding:11px; }
+  .app-shell .ecos-compact-player { max-width:100vw; }
+}
+
+@media (max-width: 370px) {
+  .app-shell .container, .app-shell .header-container { width:calc(100% - 28px); }
+  .app-shell .home-after-grid > h2 { font-size:30px; }
+  .app-shell .state-people h2 { font-size:30px; }
+  .app-shell .state-artist-card strong { font-size:17px; }
+  .app-shell .artists-grid { gap:14px 9px; }
+  .app-shell .artist-poster { height:178px; }
+  .app-shell .station-next .button-primary { font-size:10px; letter-spacing:.06em; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .app-shell .ecos-passport-launch,
+  .app-shell .artist-tile,
+  .app-shell .scene-bottom .button-primary { transition:none; }
+}
