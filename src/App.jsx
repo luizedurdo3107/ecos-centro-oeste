@@ -1,3 +1,4 @@
+import EcosQrShare from './features/EcosQrShare'; // ECOS_QR_COMPARTILHE_V1
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, ArrowLeft, AudioLines, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Compass, Disc3, ExternalLink, Headphones, Info, Maximize2, Menu, Mic2, Music2, Pause, Play, RotateCcw, SkipBack, SkipForward, SlidersHorizontal, Volume2, VolumeX, X, MoveUpRight, Captions } from 'lucide-react';
 import { states, artists, instruments, tracks, timeline, quiz, sources } from './data/content';
@@ -348,6 +349,8 @@ const navigate=(page,id)=>{
    {route.page==='final'&&<section className="end-scene"><div className="end-background"/><div className="end-vignette"/><div className="container end-inner"><SmallLabel light>O ÚLTIMO CAPÍTULO — OU O PRIMEIRO DE MUITOS</SmallLabel><h1 className="display-title">A MÚSICA GUARDA<br/>A <em>MEMÓRIA</em><br/>DE UM POVO.</h1><p>Cada acorde revela um lugar. Cada ritmo preserva uma história. E cada nova geração mantém viva a cultura que recebeu.</p><div className="end-quote">“Cada canto tem uma história.<br/>Cada história tem um som.”</div><div className="end-buttons"><button className="button-primary" onClick={reset}>EXPLORAR NOVAMENTE <RotateCcw size={19}/></button><button className="button-outline light-outline" onClick={()=>navigate('map')}>VOLTAR AO MAPA <ArrowRight size={18}/></button></div></div>
      <div className="end-credits container"><div><strong>ECOS DO CENTRO-OESTE</strong><span>Mostra Cultural · SENAC Mediotec · Desenvolvimento de Sistemas</span><span>Projeto escolar educativo, sem vínculo institucional com os artistas citados.</span></div><div><details><summary>FONTES E CRÉDITOS <ChevronDown size={18}/></summary><div className="sources-list"><p>Textos baseados em fontes institucionais e acervos públicos. Imagens: panorama original gerado para o projeto e ilustrações editoriais originais. Áudios: sínteses didáticas originais, sem gravações comerciais.</p>{sources.map(s=><a href={s.url} target="_blank" rel="noreferrer" key={s.url}>{s.title}<ExternalLink size={13}/></a>)}</div></details></div></div>
    </section>}
+  
+      {(route.page === 'home' || route.page === 'final') && <EcosQrShare />}
   </main>
   <PassaporteSonoro route={route} states={states} navigateState={goToState} />
   {route.page!=='home'&&route.page!=='final'&&<div className="floating-journey"><span><i/> ETAPA {Math.max(1,progressMap[route.page])} DE 8</span><button onClick={reset} title="Parar os áudios e deixar pronto para outro visitante"><RotateCcw size={14}/> REINICIAR VISITA</button></div>}
